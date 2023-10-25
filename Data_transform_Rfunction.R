@@ -3,12 +3,14 @@
 #install.packages("tidyverse")
 library(tidyverse)
 
-# The function takes data frame as an argument and returns dataset with all lowercase characters in column names.
-transform_data <- function(data) {
+# The function takes a dataframe and a vector of column names to be selected as arguments 
+# Returns dataset with selected columns and all lowercase characters in column names.
+transform_data <- function(data, selected_cols) {
   if (is.data.frame(data)) {
     # Rename all columns to lowercase
-    colnames(data) <- tolower(colnames(data))
-    return(data)
+    new_data <- data %>% select(selected_cols)
+    colnames(new_data) <- tolower(colnames(new_data))
+    return(new_data)
   } else {
     # Return the original data if it's not a data frame
     return(print("Input is not a data frame"))
@@ -20,8 +22,9 @@ head(iris)
 colnames(iris) # The 'iris' dataset has uppercase characters in column names.
 
 # Let's use the function to transform the column names
-lower_colnames_iris <- transform_data(iris)
-colnames(lower_colnames_iris)
+selectedcols <- c('Sepal.Length', 'Sepal.Width', 'Species')
+new_iris <- transform_data(iris, selected_cols = selectedcols)
 
 # Let's compare and validate the transformation.
 colnames(iris) == colnames(lower_colnames_iris)
+head(new_iris)
